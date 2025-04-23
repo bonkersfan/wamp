@@ -21,66 +21,35 @@
     <div id="app">
       <!-- Webamp will try to center within this diff -->
     </div>
-    <marquee id="current-track"></marquee>
-    <script src="https://unpkg.com/webamp"></script>
+    <script src="https://unpkg.com/webamp@1.5.0/built/webamp.bundle.min.js"></script>
     <script>
-    import llama from "./track01";
-import llama from "./track02";
-import llama from "./track03";
-import rinSkin from "./skin.wsz";
+      const Webamp = window.Webamp;
+      const webamp = new Webamp({
+        initialTracks: [
+          {
+            metaData: {
+              artist: "Dj Sharpnel",
+              title: "Blue Sky",
+            },
+            // NOTE: Your audio file must be served from the same domain as your HTML
+            // file, or served with permissive CORS HTTP headers:
+            // https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+            url: "https://bonkersfan.github.io/track01.mp3",
+            duration: 5.322286,
+          },
+          {
+            metaData: {
+              artist: "Bimbo Jones",
+              title: "Come fly with me",
+            },
+            url: "https://bonkersfan.github.io/track02.mp3",
+            duration: 5.322286,
+          },
+        ],
+      });
 
-if (!Webamp.browserIsSupported()) {
-  alert("Oh no! Webamp does not work in this browser!");
-  throw new Error("What's the point of anything?");
-}
-
-const webamp = new Webamp({
-  initialTracks: [
-    {
-      metaData: {
-        artist: "Dj Sharpnel",
-        title: "Blue Sky"
-      },
-      url: "bonkersfan.github.io/wamp/track01",
-      duration: 5.322286
-    }
-  ],
-  availableSkins: [
-    { url: rinSkin, name: "Rin" },
-  ]
-});
-
-// An example of handling the close button and giving a way to reopen WEebamp
-webamp.onClose(() => {
-  const open = document.createElement("button");
-  open.innerText = "Reopen";
-  document.getElementById("controls").appendChild(open);
-  function handleClick() {
-    webamp.reopen();
-    open.remove();
-    open.removeEventListener("click", handleClick);
-  }
-  open.addEventListener("click", handleClick);
-});
-
-// Example of adding a confirmation button before Webamp can be closed.
-webamp.onWillClose((cancel) => {
-  if (!window.confirm("Are you sure you want to close Webamp?")) {
-    cancel();
-  }
-});
-
-// An example of shoing the currently playing track
-webamp.onTrackDidChange((trackInfo) => {
-  const { artist, title } = trackInfo.metaData;
-  // Another option might be to set `document.title`;
-  document.getElementById(
-    "current-track"
-  ).innerText = `Now playing: ${title} by ${artist}`;
-});
-
-// Here we go! Let's show Webamp.
-webamp.renderWhenReady(document.getElementById("app"));
-</script>
+      // Returns a promise indicating when it's done loading.
+      webamp.renderWhenReady(document.getElementById("app"));
+    </script>
   </body>
 </html>
