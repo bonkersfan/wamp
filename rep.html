@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRUH</title>
+    <script src="https://unpkg.com/webamp@1.4.2/built/webamp.bundle.min.js"></script>
+    <style type="text/css" media="screen">
+    * { font-family: sans-serif; }
+    body { font-size: 2em; }
+    @media (prefers-color-scheme: dark) {
+      body { background: #222; color: #ccc; }
+    }
+    @media (prefers-color-scheme: light) {
+      body { background: #eee; color: #444; }
+    }
+  </style>
+  </head>
+  <body>
+  <script>
+    const Webamp = window.Webamp, webamp = new Webamp({
+		initialTracks: [
+            { url: "https://files.catbox.moe/cvutot.mp3", },
+            { url: "https://files.catbox.moe/n1jnms.mp3" },
+            { url: "https://files.catbox.moe/rratyz.mp3" },
+        ],
+		initialSkin: { url: 'https://files.catbox.moe/ft0jt6.wsz' },
+    });
+    webamp.renderWhenReady(document.getElementById('main'));
+</script>
+  </body>
+</html>
