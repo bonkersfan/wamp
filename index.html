@@ -1,32 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BRUH</title>
-    <script src="https://unpkg.com/webamp"></script>
-    <style type="text/css" media="screen">
-    * { font-family: sans-serif; }
-    body { font-size: 2em; }
-    @media (prefers-color-scheme: dark) {
-      body { background: #222; color: #ccc; }
-    }
-    @media (prefers-color-scheme: light) {
-      body { background: #eee; color: #444; }
-    }
-  </style>
+    <title>Example Webamp Integration</title>
+    <meta charset="UTF-8" />
+    <style>
+	    body {
+  background-color: black;
+  margin: 0;
+  padding: 0;
+}
+#app {
+  position: absolute;
+  height: 100vh;
+  width: 100%;
+}
+    </style>
   </head>
+
   <body>
-  <script>
-    const Webamp = window.Webamp, webamp = new Webamp({
-		initialTracks: [
-            { url: "https://bonkersfan.github.io/wamp/track01.mp3", },
-            { url: "https://bonkersfan.github.io/wamp/track02.mp3" },
-            { url: "https://bonkersfan.github.io/wamp/track02.mp3" },
-        ],
-		initialSkin: { url: './skin.wsz' },
-    });
-    webamp.renderWhenReady(document.getElementById('main'));
+    <div id="app">
+      <!-- Webamp will try to center within this diff -->
+    </div>
+    <marquee id="current-track"></marquee>
+    <div id="controls">
+      <button id="prev">Previous</button>
+      <button id="play">Play</button>
+      <button id="pause">Pause</button>
+      <button id="stop">Stop</button>
+      <button id="next">Next</button>
+      <button id="close">Close</button>
+    </div>
+    <script src="https://unpkg.com/webamp"></script>
+    <script>
+    import llama from "./track01";
+import llama from "./track02";
+import llama from "./track03";
+import rinSkin from "./internetArchive.wsz";
+
+if (!Webamp.browserIsSupported()) {
+  alert("Oh no! Webamp does not work in this browser!");
+  throw new Error("What's the point of anything?");
+}
+
+const webamp = new Webamp({
+  initialTracks: [
+    {
+      metaData: {
+        artist: "Dj Sharpnel",
+        title: "Blue Sky"
+      },
+      url: track01,
+      duration: 5.322286
+    }
+  ],
+  availableSkins: [
+    { url: rinSkin, name: "Rin" },
+  ]
+});
+
+// An example of handling the close button and giving a way to reopen WEebamp
+webamp.onClose(() => {
+  const open = document.createElement("button");
+  open.innerText = "Reopen";
+  document.getElementById("controls").appendChild(open);
+  function handleClick() {
+    webamp.reopen();
+    open.remove();
+    open.removeEventListener("click", handleClick);
+  }
+  open.addEventListener("click", handleClick);
+});
+
+// Example of adding a confirmation button before Webamp can be closed.
+webamp.onWillClose((cancel) => {
+  if (!window.confirm("Are you sure you want to close Webamp?")) {
+    cancel();
+  }
+});
+
+// An example of shoing the currently playing track
+webamp.onTrackDidChange((trackInfo) => {
+  const { artist, title } = trackInfo.metaData;
+  // Another option might be to set `document.title`;
+  document.getElementById(
+    "current-track"
+  ).innerText = `Now playing: ${title} by ${artist}`;
+});
+
+// Here we go! Let's show Webamp.
+webamp.renderWhenReady(document.getElementById("app"));
 </script>
   </body>
 </html>
