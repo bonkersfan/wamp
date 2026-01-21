@@ -3,7 +3,7 @@
 	"FileReferences": {
 		"Moc": "bug_model.moc3",
 		"Textures": [
-			"bug_model.4096/texture_00.png"
+			"textures/texture_00.png"
 		],
 		"Physics": "bug_model.physics3.json",
 		"DisplayInfo": "bug_model.cdi3.json"
